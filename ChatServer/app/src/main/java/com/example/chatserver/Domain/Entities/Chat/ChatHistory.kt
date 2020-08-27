@@ -1,0 +1,28 @@
+package com.example.chatserver.Domain.Entities.Chat
+
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.Index
+import androidx.room.PrimaryKey
+
+@Entity(
+    tableName = "chat_histories",
+    indices = [Index("id", unique = true)]
+)
+data class ChatHistory(
+    @PrimaryKey
+    @ColumnInfo(name = "id")
+    var id: String,
+
+    @ColumnInfo(name = "user1_id")
+    var user1: Int,
+
+    @ColumnInfo(name = "user2_id")
+    var user2: Int,
+
+    @ColumnInfo(name = "update_date")
+    var updateDate: Long
+){
+
+}
+
