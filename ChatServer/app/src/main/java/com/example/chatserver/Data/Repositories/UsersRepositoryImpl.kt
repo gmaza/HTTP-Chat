@@ -17,7 +17,7 @@ class UsersRepositoryImpl @Inject constructor(
     UsersRepository {
     override fun insertOrUpdate(user: User): Single<ResultModel> {
         database.usersDao().insertOrUpdateUser(user)
-        return Single.just(ResultModel(true, "OK!"))
+        return Single.just(ResultModel(true, "OK"))
     }
 
     override fun isUserExists(id: String): Single<Boolean> {

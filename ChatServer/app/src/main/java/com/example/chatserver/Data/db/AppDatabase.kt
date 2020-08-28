@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.chatserver.Data.daos.ChatHistoriesDao
+import com.example.chatserver.Data.daos.MessagesDao
 import com.example.chatserver.Data.daos.UsersDao
 import com.example.chatserver.Domain.Entities.Chat.ChatHistory
 import com.example.chatserver.Domain.Entities.Chat.Message
@@ -20,6 +22,8 @@ private const val DATABASE = "notes"
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun usersDao(): UsersDao
+    abstract fun messagesDao(): MessagesDao
+    abstract fun chatHistoriesDao(): ChatHistoriesDao
 
     companion object {
 

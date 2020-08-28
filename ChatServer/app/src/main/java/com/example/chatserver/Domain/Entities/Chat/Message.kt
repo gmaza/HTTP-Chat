@@ -12,10 +12,13 @@ import androidx.room.PrimaryKey
 data class Message(
     @PrimaryKey
     @ColumnInfo(name = "id")
-    var id: String,
+    var id: Long,
 
     @ColumnInfo(name = "history_id")
     var ChatHistory: String,
+
+    @ColumnInfo(name = "value")
+    var value: String,
 
     @ColumnInfo(name = "update_date")
     var updateDate: Long

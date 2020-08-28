@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import com.example.chatserver.Common.models.ResultModel
+import com.example.chatserver.Domain.UseCases.Chats.SendMessageUseCase
 import com.example.chatserver.Domain.UseCases.GetUserUseCase
 import com.example.chatserver.Domain.UseCases.GetUsersUseCase
 import com.example.chatserver.Domain.UseCases.RegisterUserUserCase
@@ -32,6 +33,10 @@ class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var getUsersUseCase : GetUsersUseCase
+
+    @Inject
+    lateinit var sendMessageUseCase : SendMessageUseCase
+
 
     var result : ResultModel?  = null
 
@@ -166,10 +171,12 @@ class MainActivity : AppCompatActivity() {
 
                     val requestBody = streamToString(inputStream)
                     val jsonBody = JSONObject(requestBody)
-                    // save message to database
 
-                    //for testing
-                    sendResponse(httpExchange, jsonBody.toString())
+                    sendMessageUseCase.execute(
+                        onSuccess = { r: ResultModel ->sendResponse(httpExchange, r.message) },
+                        onError = { result = ResultModel(false, "uknown problem") },
+                        params = SendMessageUseCase.Params(jsonBody["me"].toString(), jsonBody["friend"].toString(), jsonBody["message"].toString())
+                    )
                 }
 
             }

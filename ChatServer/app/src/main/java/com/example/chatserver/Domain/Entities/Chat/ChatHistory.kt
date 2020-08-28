@@ -15,10 +15,10 @@ data class ChatHistory(
     var id: String,
 
     @ColumnInfo(name = "user1_id")
-    var user1: Int,
+    var user1: String,
 
     @ColumnInfo(name = "user2_id")
-    var user2: Int,
+    var user2: String,
 
     @ColumnInfo(name = "update_date")
     var updateDate: Long
