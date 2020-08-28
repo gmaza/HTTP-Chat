@@ -20,6 +20,9 @@ data class Message(
     @ColumnInfo(name = "value")
     var value: String,
 
+    @ColumnInfo(name = "is_sender")
+    var isSender: Boolean,
+
     @ColumnInfo(name = "update_date")
     var updateDate: Long
 ){

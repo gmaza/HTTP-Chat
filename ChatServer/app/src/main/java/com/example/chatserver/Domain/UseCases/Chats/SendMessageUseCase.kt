@@ -36,13 +36,13 @@ class SendMessageUseCase @Inject constructor(private val historyRepository: Chat
                 params.senderName, params.receiverName, System.currentTimeMillis()))
 
             messagesReposiory.insertOrUpdate(Message(System.currentTimeMillis(),
-                params.senderName + params.receiverName, params.message, System.currentTimeMillis()))
+                params.senderName + params.receiverName, params.message, true, System.currentTimeMillis()))
 
             historyRepository.insertOrUpdate(ChatHistory(params.receiverName + params.senderName,
                 params.receiverName, params.senderName, System.currentTimeMillis()))
 
             messagesReposiory.insertOrUpdate(Message(System.currentTimeMillis(),
-                params.receiverName + params.senderName, params.message, System.currentTimeMillis()))
+                params.receiverName + params.senderName, params.message, false, System.currentTimeMillis()))
 
             return Single.just(ResultModel(true,"OK"))
         }

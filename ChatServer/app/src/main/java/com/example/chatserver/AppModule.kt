@@ -9,6 +9,7 @@ import com.example.chatserver.Data.db.AppDatabase
 import com.example.chatserver.Domain.Repositories.ChatHitoriesRepository
 import com.example.chatserver.Domain.Repositories.MessagesReposiory
 import com.example.chatserver.Domain.Repositories.UsersRepository
+import com.example.chatserver.Domain.UseCases.Chats.GetMessagesWIthFriendUseCase
 import com.example.chatserver.Domain.UseCases.Chats.SendMessageUseCase
 import com.example.chatserver.Domain.UseCases.GetUserUseCase
 import com.example.chatserver.Domain.UseCases.GetUsersUseCase
@@ -50,6 +51,10 @@ class AppModule(private val app: Application) {
     @Provides
     @Singleton
     fun provideGetUsersUserCase(): GetUsersUseCase = GetUsersUseCase(provideUsersRepository())
+
+    @Provides
+    @Singleton
+    fun GetMessagesWIthFriendUseCase(): GetMessagesWIthFriendUseCase = GetMessagesWIthFriendUseCase(provideMessagesRepository())
 
     @Provides
     @Singleton

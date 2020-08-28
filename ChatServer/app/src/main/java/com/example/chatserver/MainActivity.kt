@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import com.example.chatserver.Common.models.ResultModel
+import com.example.chatserver.Domain.UseCases.Chats.GetMessagesResponse
+import com.example.chatserver.Domain.UseCases.Chats.GetMessagesWIthFriendUseCase
 import com.example.chatserver.Domain.UseCases.Chats.SendMessageUseCase
 import com.example.chatserver.Domain.UseCases.GetUserUseCase
 import com.example.chatserver.Domain.UseCases.GetUsersUseCase
@@ -36,6 +38,9 @@ class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var sendMessageUseCase : SendMessageUseCase
+
+    @Inject
+    lateinit var getMessagesWIthFriendUseCase : GetMessagesWIthFriendUseCase
 
 
     var result : ResultModel?  = null
@@ -163,8 +168,22 @@ class MainActivity : AppCompatActivity() {
         run {
             when (httpExchange!!.requestMethod) {
                 "GET" -> {
-                    // Get all messages
-                    sendResponse(httpExchange, "Would be all messages stringified json")
+                    var me: String = ""
+                    var friend: String = ""
+                    var skip: Int = 0
+                    var take: Int = 10
+                    if(httpExchange.requestURI.query?.isNullOrEmpty() == false) {
+                        var q = getQueryMap(httpExchange.requestURI.query)
+                        me = q!!["me"] ?: ""
+                        friend = q!!["friend"] ?: ""
+                        skip = q!!["skip"]?.toInt() ?: 0
+                        take = q!!["take"]?.toInt() ?: 10
+                    }
+                    getMessagesWIthFriendUseCase.execute(
+                        onSuccess = { r: GetMessagesResponse ->sendResponse(httpExchange, r.toString()) },
+                        onError = { result = ResultModel(false, "uknown problem") },
+                        params = GetMessagesWIthFriendUseCase.Params(me, friend, skip, take)
+                    )
                 }
                 "POST" -> {
                     val inputStream = httpExchange.requestBody
