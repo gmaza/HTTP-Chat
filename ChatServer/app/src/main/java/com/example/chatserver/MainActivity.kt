@@ -3,6 +3,8 @@ package com.example.chatserver
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
+import com.example.chatserver.Common.models.ResultModel
+import com.example.chatserver.Domain.UseCases.RegisterUserUserCase
 import com.sun.net.httpserver.HttpExchange
 import com.sun.net.httpserver.HttpHandler
 import com.sun.net.httpserver.HttpServer
@@ -13,15 +15,28 @@ import java.io.InputStream
 import java.net.InetSocketAddress
 import java.util.*
 import java.util.concurrent.Executors
+import javax.inject.Inject
 
 
 class MainActivity : AppCompatActivity() {
 
     private var serverUp = false
 
+    @Inject
+    lateinit var registerUserUseCase : RegisterUserUserCase
+
+    var result : ResultModel?  = null
+
+    fun test(){
+
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        var a = (application as ChatApplication)
+        a.appComponent.inject(this)
+        test()
        // setSupportActionBar(toolbar)
         val port = 5000
 
@@ -93,10 +108,19 @@ class MainActivity : AppCompatActivity() {
             // Get request method
             when (exchange!!.requestMethod) {
                 "GET" -> {
-                    val rootObject= JSONObject()
-                    rootObject.put("name","test name")
-                    rootObject.put("age","25")
-                    sendResponse(exchange, rootObject.toString())
+                    var response = "eeeeeeee"
+                   var a = registerUserUseCase.execute(
+                        onSuccess = { r: ResultModel ->sendResponse(exchange, r.message) },
+                        onError = { result = ResultModel(false, "dont know") },
+                        params = RegisterUserUserCase.Params("guka", "dev")
+                    )
+
+//                    sendResponse(exchange, response)
+
+//                    val rootObject= JSONObject()
+//                    rootObject.put("name","test name")
+//                    rootObject.put("age","25")
+//                    sendResponse(exchange, rootObject.toString())
                 }
 
             }

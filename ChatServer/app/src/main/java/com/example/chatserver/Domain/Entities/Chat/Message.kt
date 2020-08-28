@@ -6,7 +6,7 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 
 @Entity(
-    tableName = "chat_histories",
+    tableName = "messages",
     indices = [Index("id", unique = true)]
 )
 data class Message(

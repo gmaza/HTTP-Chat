@@ -15,7 +15,7 @@ class RegisterUserUserCase @Inject constructor(private val usersRepo: UsersRepos
         }
     }
 
-    class Params(
+    data class Params(
         val name: String,
         val profession: String
     )

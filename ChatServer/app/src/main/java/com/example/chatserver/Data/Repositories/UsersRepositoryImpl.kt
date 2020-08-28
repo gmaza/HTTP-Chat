@@ -4,7 +4,10 @@ import com.example.chatserver.Common.models.ResultModel
 import com.example.chatserver.Data.db.AppDatabase
 import com.example.chatserver.Domain.Repositories.UsersRepository
 import com.example.chatserver.Domain.User.User
+import io.reactivex.Flowable
+import io.reactivex.Observable
 import io.reactivex.Single
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 class UsersRepositoryImpl @Inject constructor(
@@ -12,7 +15,10 @@ class UsersRepositoryImpl @Inject constructor(
 ) :
     UsersRepository {
     override fun register(user: User): Single<ResultModel> {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+//        var o = Observable.fromCallable { database.usersDao().insertOrUpdateUser(user) }
+////            .subscribe{ResultModel(true, "OK!")}
+////        return Single.fromObservable{o}
+        database.usersDao().insertOrUpdateUser(user)
+        return Single.just(ResultModel(true, "OK!"))
     }
-
 }
