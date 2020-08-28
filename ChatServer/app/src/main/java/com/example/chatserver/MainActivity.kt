@@ -11,7 +11,6 @@ import com.sun.net.httpserver.HttpExchange
 import com.sun.net.httpserver.HttpHandler
 import com.sun.net.httpserver.HttpServer
 import kotlinx.android.synthetic.main.activity_main.*
-import org.json.JSONArray
 import org.json.JSONObject
 import java.io.IOException
 import java.io.InputStream
@@ -131,12 +130,17 @@ class MainActivity : AppCompatActivity() {
             // Get request method
             when (exchange!!.requestMethod) {
                 "GET" -> {
-                    var q = getQueryMap(exchange.requestURI.query)
-                    val search = q!!["search"]!!
-                    val skip =  q!!["skip"]!!.toInt()
-                    val take = q!!["take"]!!.toInt()
+                    var search: String = ""
+                    var skip: Int = 0
+                    var take: Int = 10
+                    if(exchange.requestURI.query?.isNullOrEmpty() == false) {
+                        var q = getQueryMap(exchange.requestURI.query)
+                        search = q!!["search"] ?: ""
+                        skip = q!!["skip"]?.toInt() ?: 0
+                        take = q!!["take"]?.toInt() ?: 10
+                    }
                     getUsersUseCase.execute(
-                        onSuccess = { r -> sendResponse(exchange, JSONArray(r.users).toString()) },
+                        onSuccess = { r -> sendResponse(exchange, r.quantity.toString()) },
                         onError = { result = ResultModel(false, "dont know") },
                         params = GetUsersUseCase.Params(search, skip, take)
                     )

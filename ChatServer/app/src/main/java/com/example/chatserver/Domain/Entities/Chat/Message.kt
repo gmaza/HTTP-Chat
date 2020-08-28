@@ -15,7 +15,7 @@ data class Message(
     var id: String,
 
     @ColumnInfo(name = "history_id")
-    var ChatHistory: Int,
+    var ChatHistory: String,
 
     @ColumnInfo(name = "update_date")
     var updateDate: Long
