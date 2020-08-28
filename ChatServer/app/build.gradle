@@ -41,7 +41,7 @@ dependencies {
 
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
-    def room_version = "2.2.5"
+    def room_version = "2.3.0-alpha01"
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
@@ -58,5 +58,11 @@ dependencies {
     implementation "com.google.dagger:dagger-android-support:$daggerVer"
     kapt "com.google.dagger:dagger-android-processor:$daggerVer"
     kapt "com.google.dagger:dagger-compiler:$daggerVer"
+
+    def paging_version = "3.0.0-alpha05"
+
+    implementation "androidx.paging:paging-runtime:$paging_version"
+    testImplementation "androidx.paging:paging-common:$paging_version"
+    implementation "androidx.paging:paging-rxjava2:$paging_version"
 }
 

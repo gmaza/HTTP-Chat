@@ -11,7 +11,11 @@ class RegisterUserUserCase @Inject constructor(private val usersRepo: UsersRepos
 
     override fun buildUseCaseSingle(params: Params): Single<ResultModel> {
         return with(params) {
-            usersRepo.register(User("Asd","asd", "asd"))
+            var exists = usersRepo.isUserExists(params.name)
+            if(!exists.blockingGet())
+                return usersRepo.insertOrUpdate(User(params.name,params.name, params.profession))
+            else
+                return Single.just(ResultModel(false, "user already exists!"))
         }
     }
 

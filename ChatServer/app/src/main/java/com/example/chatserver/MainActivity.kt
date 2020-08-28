@@ -1,14 +1,17 @@
 package com.example.chatserver
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
+import androidx.appcompat.app.AppCompatActivity
 import com.example.chatserver.Common.models.ResultModel
+import com.example.chatserver.Domain.UseCases.GetUserUseCase
+import com.example.chatserver.Domain.UseCases.GetUsersUseCase
 import com.example.chatserver.Domain.UseCases.RegisterUserUserCase
 import com.sun.net.httpserver.HttpExchange
 import com.sun.net.httpserver.HttpHandler
 import com.sun.net.httpserver.HttpServer
 import kotlinx.android.synthetic.main.activity_main.*
+import org.json.JSONArray
 import org.json.JSONObject
 import java.io.IOException
 import java.io.InputStream
@@ -24,6 +27,12 @@ class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var registerUserUseCase : RegisterUserUserCase
+
+    @Inject
+    lateinit var getUserUseCase : GetUserUseCase
+
+    @Inject
+    lateinit var getUsersUseCase : GetUsersUseCase
 
     var result : ResultModel?  = null
 
@@ -85,6 +94,8 @@ class MainActivity : AppCompatActivity() {
             mHttpServer!!.createContext("/index", rootHandler)
             // Handle /messages endpoint
             mHttpServer!!.createContext("/messages", messageHandler)
+            // Handle /register endpoint
+            mHttpServer!!.createContext("/register", registrationHandler)
             mHttpServer!!.start()//startServer server;
             serverTextView.text = getString(R.string.server_running)
             serverButton.text = getString(R.string.stop_server)
@@ -102,25 +113,33 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun getQueryMap(query: String): Map<String, String>? {
+        val params = query.split("&").toTypedArray()
+        val map: MutableMap<String, String> =
+            HashMap()
+        for (param in params) {
+            val name = param.split("=").toTypedArray()[0]
+            val value = param.split("=").toTypedArray()[1]
+            map[name] = value
+        }
+        return map
+    }
+
     // Handler for root endpoint
     private val rootHandler = HttpHandler { exchange ->
         run {
             // Get request method
             when (exchange!!.requestMethod) {
                 "GET" -> {
-                    var response = "eeeeeeee"
-                   var a = registerUserUseCase.execute(
-                        onSuccess = { r: ResultModel ->sendResponse(exchange, r.message) },
+                    var q = getQueryMap(exchange.requestURI.query)
+                    val search = q!!["search"]!!
+                    val skip =  q!!["skip"]!!.toInt()
+                    val take = q!!["take"]!!.toInt()
+                    getUsersUseCase.execute(
+                        onSuccess = { r -> sendResponse(exchange, JSONArray(r.users).toString()) },
                         onError = { result = ResultModel(false, "dont know") },
-                        params = RegisterUserUserCase.Params("guka", "dev")
+                        params = GetUsersUseCase.Params(search, skip, take)
                     )
-
-//                    sendResponse(exchange, response)
-
-//                    val rootObject= JSONObject()
-//                    rootObject.put("name","test name")
-//                    rootObject.put("age","25")
-//                    sendResponse(exchange, rootObject.toString())
                 }
 
             }
@@ -147,6 +166,26 @@ class MainActivity : AppCompatActivity() {
 
                     //for testing
                     sendResponse(httpExchange, jsonBody.toString())
+                }
+
+            }
+        }
+    }
+
+    private val registrationHandler = HttpHandler { httpExchange ->
+        run {
+            when (httpExchange!!.requestMethod) {
+                "POST" -> {
+                    val inputStream = httpExchange.requestBody
+
+                    val requestBody = streamToString(inputStream)
+                    val jsonBody = JSONObject(requestBody)
+
+                    registerUserUseCase.execute(
+                        onSuccess = { r: ResultModel ->sendResponse(httpExchange, r.message) },
+                        onError = { result = ResultModel(false, "uknown problem") },
+                        params = RegisterUserUserCase.Params(jsonBody["name"].toString(), jsonBody["profession"].toString())
+                    )
                 }
 
             }
