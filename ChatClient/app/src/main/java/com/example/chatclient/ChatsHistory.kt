@@ -8,15 +8,20 @@ import android.view.View
 import android.view.WindowManager
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.chatclient.chatshistory.*
 import com.example.chatclient.login.LoginPresenter
+import com.example.chatclient.utils.EndlessRecyclerViewScrollListener
 import com.example.chatclient.utils.SoftInputAssist
 import kotlinx.android.synthetic.main.activity_chats_history.*
 
 class ChatsHistory : AppCompatActivity(), ChatsHistoryView {
     private val presenter = ChatsHistoryPresenter(this)
     private lateinit var softInputAssist: SoftInputAssist
-
+    private  lateinit var usersAdapter: ChatsHistoryUsersAdapter
+    private  lateinit var chatsHistoryAdapter: ChatsHistoryAdapter
+    private var linear = LinearLayoutManager(this)
+    private  var searchM = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,10 +29,12 @@ class ChatsHistory : AppCompatActivity(), ChatsHistoryView {
         setContentView(R.layout.activity_chats_history)
         softInputAssist = SoftInputAssist(this)
         val me = intent.getStringExtra("name")
+        rv_chats_history.layoutManager = linear
+
 
         txt_search.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                presenter.search(s.toString())
+                presenter.search(s.toString(), 1)
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -38,20 +45,28 @@ class ChatsHistory : AppCompatActivity(), ChatsHistoryView {
         })
 
         presenter.init(me)
+        rv_chats_history.addOnScrollListener(object : EndlessRecyclerViewScrollListener(linear){
+            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
+               if(searchM)
+                   presenter.search(txt_search.text.toString(), page)
+                else
+                   presenter.getHistory(page)
+            }
+        })
     }
 
-    val animals: ArrayList<String> = ArrayList()
-
-    override fun setAdapter(quantity: Int, searchMode: Boolean, users: MutableList<UserModel>,  histories: MutableList<HistoryModel>) {
-        runOnUiThread {
-            no_chat_history_msg.visibility = View.GONE
+    override fun setAdapter(searchMode: Boolean) {
+        searchM = searchMode
+        runOnUiThread { no_chat_history_msg.visibility = View.GONE
             rv_chats_history.visibility = View.VISIBLE
             if (searchMode) {
-                rv_chats_history.layoutManager = LinearLayoutManager(this)
-                rv_chats_history.adapter = ChatsHistoryUsersAdapter(quantity, users, this)
+                if(rv_chats_history.adapter != usersAdapter)
+                    rv_chats_history.adapter = usersAdapter
+                usersAdapter.notifyDataSetChanged();
             } else {
-                rv_chats_history.layoutManager = LinearLayoutManager(this)
-                rv_chats_history.adapter = ChatsHistoryAdapter(quantity, histories, this)
+                if(rv_chats_history.adapter != chatsHistoryAdapter)
+                    rv_chats_history.adapter = chatsHistoryAdapter
+                chatsHistoryAdapter.notifyDataSetChanged();
             }
         }
     }
@@ -61,6 +76,11 @@ class ChatsHistory : AppCompatActivity(), ChatsHistoryView {
             no_chat_history_msg.visibility = View.VISIBLE
             rv_chats_history.visibility = View.GONE
         }
+    }
+
+    override fun initAdapters(users: MutableList<UserModel>, histories: MutableList<HistoryModel>) {
+        usersAdapter = ChatsHistoryUsersAdapter(users.size, users, this)
+        chatsHistoryAdapter = ChatsHistoryAdapter(histories.size, histories, this)
     }
 
 

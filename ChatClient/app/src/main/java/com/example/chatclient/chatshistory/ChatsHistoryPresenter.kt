@@ -12,6 +12,9 @@ import java.util.*
 class ChatsHistoryPresenter(var view: ChatsHistoryView) {
 
     val JSON_MEDIA = "application/json; charset=utf-8".toMediaTypeOrNull()
+    var lastMessageDate = ""
+    var users = mutableListOf<UserModel>()
+    var histories = mutableListOf<HistoryModel>()
 
     val client = OkHttpClient.Builder()
         .connectionSpecs(
@@ -27,7 +30,7 @@ class ChatsHistoryPresenter(var view: ChatsHistoryView) {
 
         private val updateTextTask = object : Runnable {
             override fun run() {
-                getHistory()
+                getHistory(1)
                 mainHandler.postDelayed(this, 3000)
             }
         }
@@ -45,9 +48,9 @@ class ChatsHistoryPresenter(var view: ChatsHistoryView) {
         mainHandler.post(updateTextTask)
     }
 
-    fun getHistory() {
+    fun getHistory(page: Int) {
         val request = Request.Builder()
-            .url("http://10.0.2.2:5000/history?me="+me)
+            .url("http://10.0.2.2:5000/history?skip=" + ((page-1) * 10) +"&take="+(page * 10) + "&me="+me)
             .build()
 
         val call: Call = client.newCall(request)
@@ -61,14 +64,18 @@ class ChatsHistoryPresenter(var view: ChatsHistoryView) {
                 if(result["quantity"] == 0)
                     view.showEmptyScreen()
                 else{
-                    var histories = mutableListOf<HistoryModel>()
+                    if((result["messages"] as JSONArray).getJSONObject(0)["date"].toString() == lastMessageDate)
+                        return
+                    if(page == 1)
+                    histories.clear()
+                    lastMessageDate = (result["messages"] as JSONArray).getJSONObject(0)["date"].toString()
                     val jUsers = (result["messages"] as JSONArray)
                     for(i in 0 until jUsers.length()){
                         histories.add(HistoryModel(jUsers.getJSONObject(i)["user"].toString(),
                             jUsers.getJSONObject(i)["lastMessage"].toString(),
                             jUsers.getJSONObject(i)["date"].toString().toLong()))
                     }
-                    view.setAdapter(result["quantity"] as Int, false, mutableListOf<UserModel>(), histories)
+                    view.setAdapter(false)
                 }
             }
         })
@@ -77,10 +84,11 @@ class ChatsHistoryPresenter(var view: ChatsHistoryView) {
     lateinit var me:String
     fun init(name: String) {
         me = name
+        view.initAdapters( users, histories)
         initTimer()
     }
 
-    fun search(word: String) {
+    fun search(word: String, page: Int) {
         if(word.length < 3){
             if(word.length == 0){
                 resumeTimer()
@@ -88,9 +96,10 @@ class ChatsHistoryPresenter(var view: ChatsHistoryView) {
             }
             return
         }
+        lastMessageDate = ""
         pauseTimer()
         val request = Request.Builder()
-            .url("http://10.0.2.2:5000?take=20&search="+ word)
+            .url("http://10.0.2.2:5000?skip=" + ((page-1) * 10) +"&take="+(page * 10) + "&search="+ word)
             .build()
 
         val call: Call = client.newCall(request)
@@ -104,12 +113,11 @@ class ChatsHistoryPresenter(var view: ChatsHistoryView) {
                 if(result["quantity"] == 0)
                     view.showEmptyScreen()
                 else{
-                    var users = mutableListOf<UserModel>()
                     val jUsers = (result["users"] as JSONArray)
                     for(i in 0 until jUsers.length()){
                         users.add(UserModel(jUsers.getJSONObject(i)["name"].toString()))
                     }
-                    view.setAdapter(result["quantity"] as Int, true, users, mutableListOf<HistoryModel>())
+                    view.setAdapter(true)
                 }
             }
         })
