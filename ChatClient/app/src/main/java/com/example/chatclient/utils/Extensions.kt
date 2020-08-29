@@ -15,7 +15,7 @@ fun Long.lastMessageDate():String {
     val minutes = seconds / 60
     val hours = minutes / 60
     val days = hours / 24
-    if (days<1) {
+    if (hours<24) {
         if (hours<1)  {
             if (minutes < 2) return "1 min"
             return (minutes.toString()+ " min")
