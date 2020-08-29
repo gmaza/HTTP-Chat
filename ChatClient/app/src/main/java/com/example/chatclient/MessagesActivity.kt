@@ -2,7 +2,10 @@ package com.example.chatclient
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.KeyEvent
+import android.view.View
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.chatclient.chatshistory.ChatsHistoryAdapter
@@ -33,6 +36,15 @@ class MessagesActivity : AppCompatActivity(), MesagesView {
         val friend = intent.getStringExtra("friend")
         val me = intent.getStringExtra("me")
         presenter.Init(me, friend)
+
+        txt_message.setOnKeyListener(View.OnKeyListener { v, keyCode, event ->
+            if (keyCode == KeyEvent.KEYCODE_ENTER && event.action == KeyEvent.ACTION_UP) {
+                presenter.sendMessage(txt_message.text.toString())
+                txt_message.setText("")
+                return@OnKeyListener true
+            }
+            false
+        })
     }
 
     override fun initAdapter(messages: MutableList<MessageModel>) {
@@ -60,5 +72,12 @@ class MessagesActivity : AppCompatActivity(), MesagesView {
     override fun onDestroy() {
         softInputAssist.onDestroy()
         super.onDestroy()
+    }
+
+    override fun showToast(message: String) {
+        runOnUiThread {
+            val toast = Toast.makeText(applicationContext, message, Toast.LENGTH_LONG)
+            toast.show()
+        }
     }
 }

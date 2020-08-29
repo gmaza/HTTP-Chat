@@ -5,6 +5,7 @@ import android.os.Looper
 import com.example.chatclient.chatshistory.HistoryModel
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.IOException
@@ -59,6 +60,33 @@ class MessagesPresenter(val view: MesagesView) {
 
     fun loadMore() {
 
+    }
+
+    fun sendMessage(message: String) {
+        if(message.isNullOrEmpty() ){
+            view.showToast("name and profession is required")
+            return
+        }
+        var json = JSONObject()
+        json.put("me",me)
+        json.put("friend",friend)
+        json.put("message",message)
+
+        val request = Request.Builder()
+            .url("http://10.0.2.2:5000/messages")
+            .post(json.toString().toRequestBody(JSON_MEDIA))
+            .build()
+
+        val call: Call = client.newCall(request)
+        call.enqueue(object :  Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                println("error")
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                load()
+            }
+        })
     }
 
     fun load() {
