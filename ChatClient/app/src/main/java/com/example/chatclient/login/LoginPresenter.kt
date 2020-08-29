@@ -39,7 +39,7 @@ class LoginPresenter(var loginView: LoginView) {
         })
     }
 
-    fun register(name: String, profession: String){
+    fun register(name: String, profession: String, icon: String){
         if(name.isNullOrEmpty() || profession.isNullOrEmpty()){
             loginView.showToast("name and profession is required")
             return
@@ -47,6 +47,8 @@ class LoginPresenter(var loginView: LoginView) {
         var json = JSONObject()
         json.put("name",name)
         json.put("profession",profession).toString()
+        if(!icon.isNullOrEmpty())
+        json.put("icon",icon).toString()
 
         val request = Request.Builder()
             .url("http://10.0.2.2:5000/register")

@@ -36,6 +36,7 @@ data class GetUsersResponse(val users: List<User>, val quantity: Int){
             var item = JSONObject()
             item.put("name",it.name)
             item.put("profession",it.profession)
+            item.put("icon",it.icon)
             usersJson.put(item)
         }
 

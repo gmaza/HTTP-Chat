@@ -1,6 +1,8 @@
 package com.example.chatclient.chatshistory
 
 import android.content.Context
+import android.graphics.BitmapFactory
+import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +26,13 @@ class ChatsHistoryUsersAdapter(val quantity: Int, var users : MutableList<UserMo
         holder?.friendName?.text = users.get(position).name
         holder?.lastMessage?.text = ""
         holder?.lastMessageTime?.text = ""
+
+        var icon = users.get(position).icon
+        if(!icon.isNullOrEmpty()) {
+            val imageBytes = Base64.decode(icon, Base64.DEFAULT)
+            val decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+            holder?.userIcon.setImageBitmap(decodedImage)
+        }
     }
 }
 
@@ -32,4 +41,5 @@ class ChatsHistoryUsers (view: View) : RecyclerView.ViewHolder(view) {
     val friendName = view.tv_chat_name
     val lastMessage = view.tv_last_message
     val lastMessageTime = view.tv_last_message_time
+    val userIcon = view.user_icon
 }

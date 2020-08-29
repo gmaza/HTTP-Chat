@@ -142,7 +142,7 @@ class ChatsHistoryPresenter(var view: ChatsHistoryView) {
                 else{
                     val jUsers = (result["users"] as JSONArray)
                     for(i in 0 until jUsers.length()){
-                        users.add(UserModel(jUsers.getJSONObject(i)["name"].toString()))
+                        users.add(UserModel(jUsers.getJSONObject(i)["name"].toString(), jUsers.getJSONObject(i)["icon"].toString()))
                     }
                     view.setAdapter(true)
                 }
@@ -170,7 +170,7 @@ class ChatsHistoryPresenter(var view: ChatsHistoryView) {
                 else{
                     val jUsers = (result["users"] as JSONArray)
                     for(i in 0 until jUsers.length()){
-                        users.add(UserModel(jUsers.getJSONObject(i)["name"].toString()))
+                        users.add(UserModel(jUsers.getJSONObject(i)["name"].toString(), jUsers.getJSONObject(i)["icon"].toString()))
                     }
                     view.setAdapter(true)
                 }
