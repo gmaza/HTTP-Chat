@@ -6,6 +6,7 @@ import org.json.JSONObject
 import java.io.IOException
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.util.*
+import kotlin.math.log
 
 
 class LoginPresenter(var loginView: LoginView) {
@@ -57,7 +58,11 @@ class LoginPresenter(var loginView: LoginView) {
             }
 
             override fun onResponse(call: Call, response: Response) {
-                loginView.showLoginForm()
+                var result = response.body!!.string()
+                if(result == "OK")
+                    loginView.openHistoryView(name)
+                else
+                    loginView.showToast(result)
             }
         })
     }
