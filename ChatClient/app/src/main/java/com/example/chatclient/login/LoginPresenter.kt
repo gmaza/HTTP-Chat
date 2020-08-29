@@ -40,6 +40,10 @@ class LoginPresenter(var loginView: LoginView) {
     }
 
     fun register(name: String, profession: String){
+        if(name.isNullOrEmpty() || profession.isNullOrEmpty()){
+            loginView.showToast("name and profession is required")
+            return
+        }
         var json = JSONObject()
         json.put("name",name)
         json.put("profession",profession).toString()
