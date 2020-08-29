@@ -13,4 +13,6 @@ interface ChatHitoriesRepository {
     fun get(chatid: String, skip: Int, take: Int): List<ChatHistory>
 
     fun count(search: String): Int
+
+    fun delete(id: String): ResultModel
 }

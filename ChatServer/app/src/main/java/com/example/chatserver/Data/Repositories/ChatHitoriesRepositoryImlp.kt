@@ -22,6 +22,11 @@ class ChatHitoriesRepositoryImlp  @Inject constructor(
     }
 
     override fun count(chatHistoryID: String): Int {
-        return  database.messagesDao().count(chatHistoryID)
+        return  database.chatHistoriesDao().count(chatHistoryID)
+    }
+
+    override fun delete(id: String): ResultModel {
+        database.chatHistoriesDao().delete(id)
+        return ResultModel(true, "OK")
     }
 }

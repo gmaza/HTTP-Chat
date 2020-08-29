@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import com.example.chatserver.Common.models.ResultModel
 import com.example.chatserver.Domain.Entities.Chat.Message
 
 @Dao
@@ -17,4 +18,7 @@ interface MessagesDao {
 
     @Query("SELECT COUNT(id) FROM messages where history_id =  :chatHistoryID")
     fun count(chatHistoryID: String) : Int
+
+    @Query("DELETE FROM messages where history_id = :id")
+    fun delete(id: String)
 }

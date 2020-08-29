@@ -9,7 +9,9 @@ import com.example.chatserver.Data.db.AppDatabase
 import com.example.chatserver.Domain.Repositories.ChatHitoriesRepository
 import com.example.chatserver.Domain.Repositories.MessagesReposiory
 import com.example.chatserver.Domain.Repositories.UsersRepository
+import com.example.chatserver.Domain.UseCases.Chats.GetHistoriesUseCase
 import com.example.chatserver.Domain.UseCases.Chats.GetMessagesWIthFriendUseCase
+import com.example.chatserver.Domain.UseCases.Chats.RemoveHistoryUseCase
 import com.example.chatserver.Domain.UseCases.Chats.SendMessageUseCase
 import com.example.chatserver.Domain.UseCases.GetUserUseCase
 import com.example.chatserver.Domain.UseCases.GetUsersUseCase
@@ -54,7 +56,15 @@ class AppModule(private val app: Application) {
 
     @Provides
     @Singleton
-    fun GetMessagesWIthFriendUseCase(): GetMessagesWIthFriendUseCase = GetMessagesWIthFriendUseCase(provideMessagesRepository())
+    fun provideGetMessagesWIthFriendUseCase(): GetMessagesWIthFriendUseCase = GetMessagesWIthFriendUseCase(provideMessagesRepository())
+
+    @Provides
+    @Singleton
+    fun provideGetHistoriesUseCase(): GetHistoriesUseCase = GetHistoriesUseCase(providHistoriesRepository())
+
+    @Provides
+    @Singleton
+    fun provideRemoveHistoryUseCase(): RemoveHistoryUseCase = RemoveHistoryUseCase(providHistoriesRepository(), provideMessagesRepository())
 
     @Provides
     @Singleton

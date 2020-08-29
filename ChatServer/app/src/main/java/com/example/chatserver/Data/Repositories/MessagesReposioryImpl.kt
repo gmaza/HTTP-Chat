@@ -26,4 +26,9 @@ class MessagesReposioryImpl  @Inject constructor(
     override fun count(chatHistoryID: String): Int {
         return  database.messagesDao().count(chatHistoryID)
     }
+
+    override fun delete(historyID: String): ResultModel {
+         database.messagesDao().delete(historyID)
+        return ResultModel(true, "OK")
+    }
 }

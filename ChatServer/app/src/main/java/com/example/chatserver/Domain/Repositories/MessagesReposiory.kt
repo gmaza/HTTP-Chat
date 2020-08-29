@@ -12,4 +12,6 @@ interface MessagesReposiory {
     fun get(chatHistoryID: String, skip: Int, take: Int): List<Message>
 
     fun count(search: String): Int
+
+    fun delete(historyID: String): ResultModel
 }

@@ -1,6 +1,8 @@
 package com.example.chatserver.Domain.UseCases.Chats
 
+import com.example.chatserver.Domain.Entities.Chat.ChatHistory
 import com.example.chatserver.Domain.Entities.Chat.Message
+import com.example.chatserver.Domain.Repositories.ChatHitoriesRepository
 import com.example.chatserver.Domain.Repositories.MessagesReposiory
 import com.example.chatserver.Domain.UseCases.SingleUseCase
 import io.reactivex.Single
@@ -8,13 +10,13 @@ import org.json.JSONArray
 import org.json.JSONObject
 import javax.inject.Inject
 
-class GetMessagesWIthFriendUseCase @Inject constructor(private val messagesReposiory: MessagesReposiory) :
-    SingleUseCase<GetMessagesResponse, GetMessagesWIthFriendUseCase.Params>() {
+class GetHistoriesUseCase @Inject constructor(private val hitoriesRepository: ChatHitoriesRepository) :
+    SingleUseCase<GetHistoriesResponse, GetHistoriesUseCase.Params>() {
 
-    override fun buildUseCaseSingle(params: Params): Single<GetMessagesResponse> {
+    override fun buildUseCaseSingle(params: Params): Single<GetHistoriesResponse> {
         return with(params) {
-            var result = GetMessagesResponse(messagesReposiory.get(params.me + params.friend,
-                params.skip, params.take), messagesReposiory.count(params.me + params.friend))
+            var result = GetHistoriesResponse(hitoriesRepository.get(params.me,
+                params.skip, params.take), hitoriesRepository.count(params.me))
 
             return Single.just(result)
         }
@@ -22,30 +24,28 @@ class GetMessagesWIthFriendUseCase @Inject constructor(private val messagesRepos
 
     data class Params(
         val me: String,
-        val friend: String,
         val skip: Int,
         val take: Int
     )
 }
 
 
-data class GetMessagesResponse(val messages: List<Message>, val quantity :Int){
+data class GetHistoriesResponse(val messages: List<ChatHistory>, val quantity :Int){
     fun ToJson() : String {
         var res = JSONObject()
 
         res.put("quantity", quantity)
 
-        var messagesJson = JSONArray()
+        var historiesJson = JSONArray()
         for(it in messages)
         {
             var item = JSONObject()
-            item.put("message",it.value)
-            item.put("isSender",it.isSender)
+            item.put("user",it.user2)
             item.put("date",it.updateDate)
-            messagesJson.put(item)
+            historiesJson.put(item)
         }
 
-        res.put("messages", messagesJson)
+        res.put("messages", historiesJson)
 
         return  res.toString()
     }
