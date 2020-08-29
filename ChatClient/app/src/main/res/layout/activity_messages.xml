@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fitsSystemWindows="true"
+        app:expanded="false"
         >
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -77,15 +78,13 @@
 
 
 
-<androidx.core.widget.NestedScrollView
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-app:layout_behavior="@string/appbar_scrolling_view_behavior">
-<TextView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:textSize="20sp"
-    android:text="@string/large_text"/>
-</androidx.core.widget.NestedScrollView>
+    <androidx.recyclerview.widget.RecyclerView
+
+        android:visibility="visible"
+        android:id="@+id/rv_messages"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

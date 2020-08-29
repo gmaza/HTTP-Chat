@@ -1,5 +1,6 @@
 package com.example.chatclient
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
@@ -15,7 +16,7 @@ import com.example.chatclient.utils.EndlessRecyclerViewScrollListener
 import com.example.chatclient.utils.SoftInputAssist
 import kotlinx.android.synthetic.main.activity_chats_history.*
 
-class ChatsHistory : AppCompatActivity(), ChatsHistoryView {
+class ChatsHistory : AppCompatActivity(), ChatsHistoryView, CellClickListener {
     private val presenter = ChatsHistoryPresenter(this)
     private lateinit var softInputAssist: SoftInputAssist
     private  lateinit var usersAdapter: ChatsHistoryUsersAdapter
@@ -102,8 +103,8 @@ class ChatsHistory : AppCompatActivity(), ChatsHistoryView {
     }
 
     override fun initAdapters(users: MutableList<UserModel>, histories: MutableList<HistoryModel>) {
-        usersAdapter = ChatsHistoryUsersAdapter(users.size, users, this)
-        chatsHistoryAdapter = ChatsHistoryAdapter(histories.size, histories, this)
+        usersAdapter = ChatsHistoryUsersAdapter(users.size, users, this, this)
+        chatsHistoryAdapter = ChatsHistoryAdapter(histories.size, histories, this, this)
     }
 
 
@@ -120,5 +121,16 @@ class ChatsHistory : AppCompatActivity(), ChatsHistoryView {
     override fun onDestroy() {
         softInputAssist.onDestroy()
         super.onDestroy()
+    }
+
+    fun openMessagesView(name: String) {
+        val intent = Intent(this, MessagesActivity::class.java).apply {
+            putExtra("name", name)
+        }
+        startActivity(intent)
+    }
+
+    override fun onCellClickListener(name: String) {
+        openMessagesView(name)
     }
 }

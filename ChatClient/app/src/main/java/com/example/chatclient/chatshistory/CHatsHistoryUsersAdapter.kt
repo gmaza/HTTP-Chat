@@ -11,7 +11,7 @@ import com.example.chatclient.R
 import kotlinx.android.synthetic.main.chat_history_item.view.*
 
 
-class ChatsHistoryUsersAdapter(val quantity: Int, var users : MutableList<UserModel>, val context: Context) : RecyclerView.Adapter<ChatsHistoryUsers>() {
+class ChatsHistoryUsersAdapter(val quantity: Int, var users : MutableList<UserModel>, val context: Context, val clickable: CellClickListener) : RecyclerView.Adapter<ChatsHistoryUsers>() {
 
     // Gets the number of animals in the list
     override fun getItemCount(): Int {
@@ -32,6 +32,10 @@ class ChatsHistoryUsersAdapter(val quantity: Int, var users : MutableList<UserMo
             val imageBytes = Base64.decode(icon, Base64.DEFAULT)
             val decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
             holder?.userIcon.setImageBitmap(decodedImage)
+        }
+
+        holder.itemView.setOnClickListener {
+            clickable.onCellClickListener(users.get(position).name)
         }
     }
 }

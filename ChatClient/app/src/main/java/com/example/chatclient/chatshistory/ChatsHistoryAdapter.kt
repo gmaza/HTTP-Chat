@@ -9,7 +9,7 @@ import com.example.chatclient.R
 import com.example.chatclient.utils.lastMessageDate
 import kotlinx.android.synthetic.main.chat_history_item.view.*
 
-class ChatsHistoryAdapter(val quantity: Int, var histories : MutableList<HistoryModel>, val context: Context) : RecyclerView.Adapter<ChatsHistoryUsers>() {
+class ChatsHistoryAdapter(val quantity: Int, var histories : MutableList<HistoryModel>, val context: Context, val clickable: CellClickListener) : RecyclerView.Adapter<ChatsHistoryUsers>() {
 
     // Gets the number of animals in the list
     override fun getItemCount(): Int {
@@ -24,6 +24,10 @@ class ChatsHistoryAdapter(val quantity: Int, var histories : MutableList<History
         holder?.friendName?.text = histories.get(position).name
         holder?.lastMessage?.text = histories.get(position).lastMessage
         holder?.lastMessageTime?.text = histories.get(position).dt.lastMessageDate()
+
+        holder.itemView.setOnClickListener {
+            clickable.onCellClickListener(histories.get(position).name)
+        }
     }
 }
 
