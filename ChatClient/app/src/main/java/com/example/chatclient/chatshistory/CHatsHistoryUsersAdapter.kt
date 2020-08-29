@@ -6,14 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.chatclient.R
-import com.example.chatclient.utils.lastMessageDate
 import kotlinx.android.synthetic.main.chat_history_item.view.*
 
-class ChatsHistoryAdapter(val quantity: Int, var histories : MutableList<HistoryModel>, val context: Context) : RecyclerView.Adapter<ChatsHistoryUsers>() {
+
+class ChatsHistoryUsersAdapter(val quantity: Int, var users : MutableList<UserModel>, val context: Context) : RecyclerView.Adapter<ChatsHistoryUsers>() {
 
     // Gets the number of animals in the list
     override fun getItemCount(): Int {
-        return histories.size
+        return users.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatsHistoryUsers {
@@ -21,13 +21,12 @@ class ChatsHistoryAdapter(val quantity: Int, var histories : MutableList<History
     }
 
     override fun onBindViewHolder(holder: ChatsHistoryUsers, position: Int) {
-        holder?.friendName?.text = histories.get(position).name
-        holder?.lastMessage?.text = histories.get(position).lastMessage
-        holder?.lastMessageTime?.text = histories.get(position).dt.lastMessageDate()
+        holder?.friendName?.text = users.get(position).name
+        holder?.lastMessage?.text = users.get(position).name
     }
 }
 
-class ChatsHistoryHolder (view: View) : RecyclerView.ViewHolder(view) {
+class ChatsHistoryUsers (view: View) : RecyclerView.ViewHolder(view) {
     // Holds the TextView that will add each animal to
     val friendName = view.tv_chat_name
     val lastMessage = view.tv_last_message
