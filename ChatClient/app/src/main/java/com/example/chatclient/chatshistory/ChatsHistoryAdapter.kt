@@ -21,10 +21,15 @@ class ChatsHistoryAdapter(val items : ArrayList<String>, val context: Context) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder?.friendName?.text = items.get(position)
+        holder?.lastMessage?.text = items.get(position)
+
+
     }
 }
 
 class ViewHolder (view: View) : RecyclerView.ViewHolder(view) {
     // Holds the TextView that will add each animal to
    val friendName = view.tv_chat_name
+    val lastMessage = view.tv_last_message
+    val lastMessageTime = view.tv_last_message_time
 }

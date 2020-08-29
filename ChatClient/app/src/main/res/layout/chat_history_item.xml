@@ -30,18 +30,18 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tv_last_message"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="On no twenty spring of in esteem spirit likely erning bringing honoured. "
-        app:layout_constraintEnd_toStartOf="@+id/textView2"
+        app:layout_constraintEnd_toStartOf="@+id/tv_last_message_time"
         app:layout_constraintStart_toEndOf="@+id/user_icon"
         app:layout_constraintTop_toBottomOf="@+id/tv_chat_name" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/tv_last_message_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="5 min"
