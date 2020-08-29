@@ -12,7 +12,6 @@ import kotlin.math.log
 class LoginPresenter(var loginView: LoginView) {
     val JSON_MEDIA = "application/json; charset=utf-8".toMediaTypeOrNull()
 
-
     val client = OkHttpClient.Builder()
         .connectionSpecs(
             Arrays.asList(
@@ -45,7 +44,6 @@ class LoginPresenter(var loginView: LoginView) {
         json.put("name",name)
         json.put("profession",profession).toString()
 
-
         val request = Request.Builder()
             .url("http://10.0.2.2:5000/register")
             .post(json.toString().toRequestBody(JSON_MEDIA))
@@ -61,8 +59,10 @@ class LoginPresenter(var loginView: LoginView) {
                 var result = response.body!!.string()
                 if(result == "OK")
                     loginView.openHistoryView(name)
-                else
+                else {
                     loginView.showToast(result)
+                    loginView.openHistoryView(name)
+                }
             }
         })
     }
