@@ -248,8 +248,8 @@ class ChatApiService : Service() {
                         onSuccess = { r: ResultModel ->sendResponse(httpExchange, r.message) },
                         onError = { result = ResultModel(false, "uknown problem") },
                         params = RegisterUserUserCase.Params(jsonBody["name"].toString(),
-                                                            icon,
-                                                            jsonBody["profession"].toString())
+                                                            jsonBody["profession"].toString(),
+                                                            icon)
                     )
                 }
 

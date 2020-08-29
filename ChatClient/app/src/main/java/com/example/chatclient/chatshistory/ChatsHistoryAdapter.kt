@@ -32,4 +32,5 @@ class ChatsHistoryHolder (view: View) : RecyclerView.ViewHolder(view) {
     val friendName = view.tv_chat_name
     val lastMessage = view.tv_last_message
     val lastMessageTime = view.tv_last_message_time
+    val userIcon = view.user_icon
 }
