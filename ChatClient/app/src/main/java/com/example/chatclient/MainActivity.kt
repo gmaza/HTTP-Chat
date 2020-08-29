@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.chatclient.login.LoginPresenter
 import com.example.chatclient.login.LoginView
+import com.example.chatclient.utils.SoftInputAssist
 import kotlinx.android.synthetic.main.activity_main.*
 import okhttp3.*
 import java.io.IOException
@@ -18,6 +19,7 @@ import java.util.*
 class MainActivity : AppCompatActivity(), LoginView {
 
     private val presenter = LoginPresenter(this)
+    private lateinit var softInputAssist: SoftInputAssist
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,6 +27,7 @@ class MainActivity : AppCompatActivity(), LoginView {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN)
 
         setContentView(R.layout.activity_main)
+        softInputAssist = SoftInputAssist(this)
 
         button_save.setOnClickListener {
             presenter.register(txt_register_name.text.toString(), txt_register_profession.text.toString())
@@ -50,5 +53,20 @@ class MainActivity : AppCompatActivity(), LoginView {
             val toast = Toast.makeText(applicationContext, message, Toast.LENGTH_LONG)
             toast.show()
         }
+    }
+
+    override fun onResume() {
+        softInputAssist.onResume()
+        super.onResume()
+    }
+
+    override fun onPause() {
+        softInputAssist.onPause()
+        super.onPause()
+    }
+
+    override fun onDestroy() {
+        softInputAssist.onDestroy()
+        super.onDestroy()
     }
 }
