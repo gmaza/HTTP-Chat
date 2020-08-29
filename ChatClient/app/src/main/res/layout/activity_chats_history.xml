@@ -38,12 +38,25 @@
             android:background="@drawable/toolbar_background"
             >
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Message"
+                android:textSize="40dp"
+                android:textColor="#FFF"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="48dp"
+
+                />
+
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:inputType="text"
                 android:ems="10"
-                android:id="@+id/editText2"
+                android:id="@+id/editText"
                 android:background="@drawable/semi_transparent_background"
                 android:hint="Search"
 
@@ -73,8 +86,29 @@
     </com.google.android.material.appbar.AppBarLayout>
 
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/no_chat_history_msg"
+        android:visibility="invisible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="128dp"
+            android:text="You have no chat history"
+            android:textSize="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <androidx.recyclerview.widget.RecyclerView
 
+        android:visibility="visible"
         android:id="@+id/rv_chats_history"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
