@@ -13,7 +13,10 @@ class MessagesActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_messages)
 
-        toolbarh.setNavigationIcon(R.drawable.delete_icon)
+        toolbarh.setNavigationIcon(R.drawable.back)
+        //setSupportActionBar(toolbarh)
+
+        //toolbar_layout.setExpandedTitleTextAppearance()
 
     }
 }
