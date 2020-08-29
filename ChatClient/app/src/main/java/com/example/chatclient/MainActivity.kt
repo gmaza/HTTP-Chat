@@ -1,8 +1,10 @@
 package com.example.chatclient
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.example.chatclient.login.LoginPresenter
@@ -31,12 +33,22 @@ class MainActivity : AppCompatActivity(), LoginView {
         presenter.checkConnection()
     }
 
-
-
-
-
     override fun showLoginForm() {
         loading.visibility = View.GONE
         mainContainer.visibility = View.VISIBLE
+    }
+
+    override fun openHistoryView(name: String) {
+        val intent = Intent(this, ChatsHistory::class.java).apply {
+            putExtra("name", name)
+        }
+        startActivity(intent)
+    }
+
+    override fun showToast(message: String) {
+        runOnUiThread {
+            val toast = Toast.makeText(applicationContext, message, Toast.LENGTH_LONG)
+            toast.show()
+        }
     }
 }
