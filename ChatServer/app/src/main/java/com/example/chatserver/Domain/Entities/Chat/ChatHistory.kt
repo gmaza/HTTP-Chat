@@ -25,7 +25,5 @@ data class ChatHistory(
 
     @ColumnInfo(name = "update_date")
     var updateDate: Long
-){
-
-}
+)
 

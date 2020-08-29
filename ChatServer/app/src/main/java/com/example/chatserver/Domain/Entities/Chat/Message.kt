@@ -29,7 +29,5 @@ data class Message(
 
     @ColumnInfo(name = "update_date")
     var updateDate: Long
-){
-
-}
+)
 

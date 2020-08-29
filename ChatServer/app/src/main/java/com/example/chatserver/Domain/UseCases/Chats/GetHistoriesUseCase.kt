@@ -1,6 +1,7 @@
 package com.example.chatserver.Domain.UseCases.Chats
 
 import com.example.chatserver.Domain.Entities.Chat.ChatHistory
+import com.example.chatserver.Domain.Entities.Chat.ChatWithFriend
 import com.example.chatserver.Domain.Entities.Chat.Message
 import com.example.chatserver.Domain.Repositories.ChatHitoriesRepository
 import com.example.chatserver.Domain.Repositories.MessagesReposiory
@@ -30,7 +31,7 @@ class GetHistoriesUseCase @Inject constructor(private val hitoriesRepository: Ch
 }
 
 
-data class GetHistoriesResponse(val messages: List<ChatHistory>, val quantity :Int){
+data class GetHistoriesResponse(val messages: List<ChatWithFriend>, val quantity :Int){
     fun ToJson() : String {
         var res = JSONObject()
 
@@ -40,9 +41,10 @@ data class GetHistoriesResponse(val messages: List<ChatHistory>, val quantity :I
         for(it in messages)
         {
             var item = JSONObject()
-            item.put("user",it.user2)
-            item.put("date",it.updateDate)
-            item.put("lastMessage",it.lastMessage)
+            item.put("user",it.chatHistory.user2)
+            item.put("icon",it.user.icon)
+            item.put("date",it.chatHistory.updateDate)
+            item.put("lastMessage",it.chatHistory.lastMessage)
             historiesJson.put(item)
         }
 

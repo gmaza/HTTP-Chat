@@ -1,6 +1,7 @@
 package com.example.chatserver.Data.daos
 
 import androidx.room.*
+import com.example.chatserver.Domain.Entities.Chat.ChatWithFriend
 import com.example.chatserver.Domain.User.User
 
 @Dao

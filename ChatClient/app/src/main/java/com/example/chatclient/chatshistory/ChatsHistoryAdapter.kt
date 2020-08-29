@@ -1,6 +1,8 @@
 package com.example.chatclient.chatshistory
 
 import android.content.Context
+import android.graphics.BitmapFactory
+import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +26,13 @@ class ChatsHistoryAdapter(val quantity: Int, var histories : MutableList<History
         holder?.friendName?.text = histories.get(position).name
         holder?.lastMessage?.text = histories.get(position).lastMessage
         holder?.lastMessageTime?.text = histories.get(position).dt.lastMessageDate()
+
+        var icon = histories.get(position).icon
+        if(!icon.isNullOrEmpty()) {
+            val imageBytes = Base64.decode(icon, Base64.DEFAULT)
+            val decodedImage = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+            holder?.userIcon.setImageBitmap(decodedImage)
+        }
 
         holder.itemView.setOnClickListener {
             clickable.onCellClickListener(histories.get(position).name)
