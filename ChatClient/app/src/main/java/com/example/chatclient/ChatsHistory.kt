@@ -10,16 +10,19 @@ import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.chatclient.chatshistory.*
 import com.example.chatclient.login.LoginPresenter
+import com.example.chatclient.utils.SoftInputAssist
 import kotlinx.android.synthetic.main.activity_chats_history.*
 
 class ChatsHistory : AppCompatActivity(), ChatsHistoryView {
     private val presenter = ChatsHistoryPresenter(this)
+    private lateinit var softInputAssist: SoftInputAssist
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         setContentView(R.layout.activity_chats_history)
+        softInputAssist = SoftInputAssist(this)
         val me = intent.getStringExtra("name")
 
         txt_search.addTextChangedListener(object : TextWatcher {
@@ -58,5 +61,21 @@ class ChatsHistory : AppCompatActivity(), ChatsHistoryView {
             no_chat_history_msg.visibility = View.VISIBLE
             rv_chats_history.visibility = View.GONE
         }
+    }
+
+
+    override fun onResume() {
+        softInputAssist.onResume()
+        super.onResume()
+    }
+
+    override fun onPause() {
+        softInputAssist.onPause()
+        super.onPause()
+    }
+
+    override fun onDestroy() {
+        softInputAssist.onDestroy()
+        super.onDestroy()
     }
 }
