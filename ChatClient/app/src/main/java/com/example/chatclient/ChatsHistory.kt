@@ -125,7 +125,8 @@ class ChatsHistory : AppCompatActivity(), ChatsHistoryView, CellClickListener {
 
     fun openMessagesView(name: String) {
         val intent = Intent(this, MessagesActivity::class.java).apply {
-            putExtra("name", name)
+            putExtra("friend", name)
+            putExtra("me", intent.getStringExtra("name"))
         }
         startActivity(intent)
     }

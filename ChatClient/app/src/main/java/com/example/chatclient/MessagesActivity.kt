@@ -30,13 +30,21 @@ class MessagesActivity : AppCompatActivity(), MesagesView {
         setContentView(R.layout.activity_messages)
 
         softInputAssist = SoftInputAssist(this)
-        presenter.Init()
+        val friend = intent.getStringExtra("friend")
+        val me = intent.getStringExtra("me")
+        presenter.Init(me, friend)
     }
 
     override fun initAdapter(messages: MutableList<MessageModel>) {
         messagesAdapter = MessagesAdapter(messages, this)
         rv_messages.layoutManager = linear
         rv_messages.adapter = messagesAdapter
+    }
+
+    override fun notifiAdapter() {
+        runOnUiThread {
+            messagesAdapter.notifyDataSetChanged()
+        }
     }
 
     override fun onResume() {

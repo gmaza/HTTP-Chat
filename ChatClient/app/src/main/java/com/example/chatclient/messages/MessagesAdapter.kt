@@ -9,6 +9,7 @@ import android.view.textclassifier.TextClassifier.TYPE_EMAIL
 import androidx.recyclerview.widget.RecyclerView
 import com.example.chatclient.R
 import com.example.chatclient.chatshistory.ChatsHistoryUsers
+import com.example.chatclient.utils.lastMessageDate
 import kotlinx.android.synthetic.main.chat_history_item.view.*
 import kotlinx.android.synthetic.main.message_from_me_item.view.*
 import kotlinx.android.synthetic.main.message_to_me_item.view.*
@@ -40,21 +41,24 @@ class MessagesAdapter( var messages : MutableList<MessageModel>, val context: Co
         if(message.isSender){
             var h = holder as messagesFromHolder
             h?.message?.text = message.message
+            h?.date?.text = message.date.lastMessageDate()
         } else {
             var h = holder as messagesToolder
             h?.message?.text = message.message
+            h?.date?.text = message.date.lastMessageDate()
         }
-
     }
 
     class messagesFromHolder (view: View) : RecyclerView.ViewHolder(view) {
         // Holds the TextView that will add each animal to
         val message = view.tv_message_from_me
+        val date = view.tv_last_msg_time_from
     }
 
     class messagesToolder (view: View) : RecyclerView.ViewHolder(view) {
         // Holds the TextView that will add each animal to
         val message = view.tv_message_to_me
+        val date = view.tv_last_msg_time_to
     }
 }
 
