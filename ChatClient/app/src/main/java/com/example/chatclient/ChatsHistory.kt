@@ -22,6 +22,7 @@ class ChatsHistory : AppCompatActivity(), ChatsHistoryView {
     private  lateinit var chatsHistoryAdapter: ChatsHistoryAdapter
     private var linear = LinearLayoutManager(this)
     private  var searchM = false
+    private lateinit var infScroll : EndlessRecyclerViewScrollListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +35,7 @@ class ChatsHistory : AppCompatActivity(), ChatsHistoryView {
 
         txt_search.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                presenter.search(s.toString(), 1)
+                presenter.search(s.toString())
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -45,28 +46,50 @@ class ChatsHistory : AppCompatActivity(), ChatsHistoryView {
         })
 
         presenter.init(me)
-        rv_chats_history.addOnScrollListener(object : EndlessRecyclerViewScrollListener(linear){
+        infScroll = object : EndlessRecyclerViewScrollListener(linear){
             override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
-               if(searchM)
-                   presenter.search(txt_search.text.toString(), page)
+                if(searchM)
+                    presenter.searchMore(txt_search.text.toString())
                 else
-                   presenter.getHistory(page)
+                    presenter.getHistoryMore()
             }
-        })
+        }
+        rv_chats_history.addOnScrollListener(infScroll)
+    }
+
+    private fun renewInfScroll() {
+        rv_chats_history.removeOnScrollListener(infScroll)
+
+        infScroll = object : EndlessRecyclerViewScrollListener(linear){
+            override fun onLoadMore(page: Int, totalItemsCount: Int, view: RecyclerView?) {
+                if(searchM)
+                    presenter.searchMore(txt_search.text.toString())
+                else
+                    presenter.getHistoryMore()
+            }
+        }
+
+        rv_chats_history.addOnScrollListener(infScroll)
     }
 
     override fun setAdapter(searchMode: Boolean) {
         searchM = searchMode
-        runOnUiThread { no_chat_history_msg.visibility = View.GONE
+        runOnUiThread {
+            no_chat_history_msg.visibility = View.GONE
             rv_chats_history.visibility = View.VISIBLE
+
             if (searchMode) {
-                if(rv_chats_history.adapter != usersAdapter)
+                if(rv_chats_history.adapter != usersAdapter) {
                     rv_chats_history.adapter = usersAdapter
-                usersAdapter.notifyDataSetChanged();
+                    renewInfScroll()
+                }
+                    usersAdapter.notifyDataSetChanged();
             } else {
-                if(rv_chats_history.adapter != chatsHistoryAdapter)
+                if(rv_chats_history.adapter != chatsHistoryAdapter) {
                     rv_chats_history.adapter = chatsHistoryAdapter
-                chatsHistoryAdapter.notifyDataSetChanged();
+                    renewInfScroll()
+                }
+                  chatsHistoryAdapter.notifyDataSetChanged();
             }
         }
     }
