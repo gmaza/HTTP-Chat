@@ -33,13 +33,13 @@ class SendMessageUseCase @Inject constructor(private val historyRepository: Chat
             // Insert or update chat histories for both users to track last chating date.
 
             historyRepository.insertOrUpdate(ChatHistory(params.senderName + params.receiverName,
-                params.senderName, params.receiverName, System.currentTimeMillis()))
+                params.senderName, params.receiverName, params.message, System.currentTimeMillis()))
 
             messagesReposiory.insertOrUpdate(Message(System.currentTimeMillis(),
                 params.senderName + params.receiverName, params.message, true, System.currentTimeMillis()))
 
             historyRepository.insertOrUpdate(ChatHistory(params.receiverName + params.senderName,
-                params.receiverName, params.senderName, System.currentTimeMillis()))
+                params.receiverName, params.senderName, params.message, System.currentTimeMillis()))
 
             messagesReposiory.insertOrUpdate(Message(System.currentTimeMillis(),
                 params.receiverName + params.senderName, params.message, false, System.currentTimeMillis()))

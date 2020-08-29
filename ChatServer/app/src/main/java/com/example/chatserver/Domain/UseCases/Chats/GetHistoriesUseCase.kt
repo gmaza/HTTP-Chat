@@ -42,6 +42,7 @@ data class GetHistoriesResponse(val messages: List<ChatHistory>, val quantity :I
             var item = JSONObject()
             item.put("user",it.user2)
             item.put("date",it.updateDate)
+            item.put("lastMessage",it.lastMessage)
             historiesJson.put(item)
         }
 

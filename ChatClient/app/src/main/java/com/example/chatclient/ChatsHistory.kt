@@ -54,7 +54,9 @@ class ChatsHistory : AppCompatActivity(), ChatsHistoryView {
     }
 
     override fun showEmptyScreen() {
-        no_chat_history_msg.visibility = View.VISIBLE
-        rv_chats_history.visibility = View.GONE
+        runOnUiThread {
+            no_chat_history_msg.visibility = View.VISIBLE
+            rv_chats_history.visibility = View.GONE
+        }
     }
 }

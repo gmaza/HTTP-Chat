@@ -242,10 +242,13 @@ class ChatApiService : Service() {
                     val requestBody = streamToString(inputStream)
                     val jsonBody = JSONObject(requestBody)
 
+                    var icon = if (jsonBody.has("icon")) jsonBody["icon"].toString() else ""
+
                     registerUserUseCase.execute(
                         onSuccess = { r: ResultModel ->sendResponse(httpExchange, r.message) },
                         onError = { result = ResultModel(false, "uknown problem") },
                         params = RegisterUserUserCase.Params(jsonBody["name"].toString(),
+                                                            icon,
                                                             jsonBody["profession"].toString())
                     )
                 }

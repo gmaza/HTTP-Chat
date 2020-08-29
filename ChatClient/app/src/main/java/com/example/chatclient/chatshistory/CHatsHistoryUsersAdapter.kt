@@ -22,7 +22,8 @@ class ChatsHistoryUsersAdapter(val quantity: Int, var users : MutableList<UserMo
 
     override fun onBindViewHolder(holder: ChatsHistoryUsers, position: Int) {
         holder?.friendName?.text = users.get(position).name
-        holder?.lastMessage?.text = users.get(position).name
+        holder?.lastMessage?.text = ""
+        holder?.lastMessageTime?.text = ""
     }
 }
 

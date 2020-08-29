@@ -20,6 +20,9 @@ data class ChatHistory(
     @ColumnInfo(name = "user2_id")
     var user2: String,
 
+    @ColumnInfo(name = "last_message")
+    var lastMessage: String,
+
     @ColumnInfo(name = "update_date")
     var updateDate: Long
 ){

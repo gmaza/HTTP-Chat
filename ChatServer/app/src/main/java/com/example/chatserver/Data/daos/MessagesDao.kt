@@ -10,7 +10,7 @@ import com.example.chatserver.Domain.Entities.Chat.Message
 @Dao
 interface MessagesDao {
 
-    @Query("SELECT * FROM messages WHERE history_id = :chatHistoryID LIMIT :take OFFSET :skip")
+    @Query("SELECT * FROM messages WHERE history_id = :chatHistoryID ORDER BY update_date DESC LIMIT :take OFFSET :skip")
     fun getMessages(chatHistoryID: String, skip: Int, take: Int): List<Message>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
