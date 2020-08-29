@@ -92,12 +92,12 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@+id/plain_text_input"
+            app:layout_constraintBottom_toTopOf="@+id/txt_register_name"
             app:srcCompat="@drawable/user_default_icon" />
 
 
         <EditText
-            android:id="@+id/plain_text_input"
+            android:id="@+id/txt_register_name"
             android:layout_width="match_parent"
             android:layout_height="44dp"
             android:layout_marginTop="10dp"
@@ -111,11 +111,11 @@
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/user_photo"
-            app:layout_constraintBottom_toTopOf="@id/plain_text_input2"
+            app:layout_constraintBottom_toTopOf="@id/txt_register_profession"
             />
 
         <EditText
-            android:id="@+id/plain_text_input2"
+            android:id="@+id/txt_register_profession"
             android:layout_width="match_parent"
             android:layout_height="44dp"
             android:layout_marginTop="10dp"
@@ -129,7 +129,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/plain_text_input"
+            app:layout_constraintTop_toBottomOf="@id/txt_register_name"
             app:layout_constraintBottom_toTopOf="@id/button_save"/>
 
         <Button
@@ -146,7 +146,7 @@
             android:textSize="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/plain_text_input2"
+            app:layout_constraintTop_toBottomOf="@id/txt_register_profession"
             app:layout_constraintBottom_toBottomOf="parent"
 
             />
