@@ -6,11 +6,15 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.chatserver.Common.models.ResultModel
 import com.example.chatserver.Domain.Entities.Chat.ChatHistory
+import com.example.chatserver.Domain.Entities.Chat.ChatWithFriend
 
 @Dao
 interface ChatHistoriesDao {
     @Query("SELECT * FROM chat_histories WHERE user1_id = :userid ORDER BY update_date DESC LIMIT :take OFFSET :skip")
     fun getHistories(userid: String, skip: Int, take: Int): List<ChatHistory>
+
+    @Query("SELECT * FROM chat_histories WHERE user1_id = :userid ORDER BY update_date DESC LIMIT :take OFFSET :skip")
+    fun getHistoriesWithFriends(userid: String, skip: Int, take: Int): List<ChatWithFriend>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertOrUpdateHistorye(history: ChatHistory): Long

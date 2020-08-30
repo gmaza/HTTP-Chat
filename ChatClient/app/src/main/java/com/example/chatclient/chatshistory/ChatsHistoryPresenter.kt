@@ -73,7 +73,8 @@ class ChatsHistoryPresenter(var view: ChatsHistoryView) {
                     for(i in 0 until jUsers.length()){
                         histories.add(HistoryModel(jUsers.getJSONObject(i)["user"].toString(),
                             jUsers.getJSONObject(i)["lastMessage"].toString(),
-                            jUsers.getJSONObject(i)["date"].toString().toLong()))
+                            jUsers.getJSONObject(i)["date"].toString().toLong(),
+                            jUsers.getJSONObject(i)["icon"].toString()))
                     }
                     view.setAdapter(false)
                 }
@@ -101,7 +102,8 @@ class ChatsHistoryPresenter(var view: ChatsHistoryView) {
                     for(i in 0 until jUsers.length()){
                         histories.add(HistoryModel(jUsers.getJSONObject(i)["user"].toString(),
                             jUsers.getJSONObject(i)["lastMessage"].toString(),
-                            jUsers.getJSONObject(i)["date"].toString().toLong()))
+                            jUsers.getJSONObject(i)["date"].toString().toLong(),
+                            jUsers.getJSONObject(i)["icon"].toString()))
                     }
                     view.setAdapter(false)
                 }

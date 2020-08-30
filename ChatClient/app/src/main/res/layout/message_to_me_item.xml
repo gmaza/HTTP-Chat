@@ -23,14 +23,14 @@
         android:background="@drawable/message_to_me"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/tv_last_msg_time"
+        app:layout_constraintEnd_toStartOf="@id/tv_last_msg_time_to"
         app:layout_constraintBottom_toBottomOf="parent"
         />
 
 
 
     <TextView
-        android:id="@+id/tv_last_msg_time"
+        android:id="@+id/tv_last_msg_time_to"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="5 min"

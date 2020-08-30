@@ -22,7 +22,7 @@
         android:textColor="#FFFFFF"
         android:background="@drawable/message_from_me"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toEndOf="@id/tv_last_msg_time"
+        app:layout_constraintStart_toEndOf="@id/tv_last_msg_time_from"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         />
@@ -30,7 +30,7 @@
 
 
     <TextView
-        android:id="@+id/tv_last_msg_time"
+        android:id="@+id/tv_last_msg_time_from"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="5 min"
