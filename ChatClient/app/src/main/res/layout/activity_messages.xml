@@ -32,7 +32,7 @@
                 android:src="@drawable/chat_header"
                 android:contentDescription="@string/app_name"
                 />
-            
+
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbarh"
                 android:layout_width="match_parent"
@@ -74,6 +74,15 @@
                     android:ems="10"
                     android:id="@+id/friend_profession"
                     android:text="Developer"
+                    android:textSize="16dp"
+                    android:textColor="#FFF"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="36dp"
+
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="80dp"
                     >
                 </TextView>
 
@@ -85,7 +94,10 @@
                     android:src="@drawable/user_default_icon"
 
                     android:layout_marginEnd="16dp"
-                    android:layout_marginBottom="8dp"/>
+                    android:layout_marginBottom="8dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentEnd="true"/>
+
             </RelativeLayout>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
@@ -119,10 +131,13 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:paddingStart="8dp"
-            android:paddingEnd="8dp"
+            android:paddingStart="32dp"
+            android:paddingEnd="32dp"
             android:background="@drawable/custom_edittext"
             android:hint="Message"
+            android:drawableEnd="@drawable/ic_send_black_24dp"
+            android:drawableRight="@drawable/ic_send_black_24dp"
+            android:drawablePadding="20dp"
             android:inputType="text"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
